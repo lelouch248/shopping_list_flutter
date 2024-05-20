@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:shopping_list/data/categories.dart';
@@ -20,18 +19,22 @@ class _NewItemState extends State<NewItem> {
   var _enteredQuantity = 1;
   var _selectedCategory = categories[Categories.vegetables]!;
   var isSending = false;
+
   void _saveItem() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         isSending = true;
       });
       _formKey.currentState!.save();
+      
       final url = Uri.https(
           "grocery-list-b5739-default-rtdb.asia-southeast1.firebasedatabase.app",
           "/shopping-list.json");
+          
       final response = await http.post(
         url,
         headers: {
+          // tells what type of data i will be sending to the server
           'Content-Type': 'application/json',
         },
         body: json.encode(
